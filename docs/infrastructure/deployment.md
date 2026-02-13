@@ -65,8 +65,8 @@ Each service is configured via its respective `.env` file in the `env/` director
 5.  **Access the Platform**:
     Open your web browser and navigate to:
     *   **Dashboard**: `https://localhost` (or `http://localhost`, redirects to HTTPS).
-    *   **Metasploit RPC**: Internal Port `$\mu$`.
-    *   **Redis**: Internal Port `$\rho$` (internal only).
+    *   **Metasploit RPC**: Internal Port $\mu$.
+    *   **Redis**: Internal Port $\rho$ (internal only).
 
 ## Troubleshooting
 

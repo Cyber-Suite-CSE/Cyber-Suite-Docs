@@ -35,7 +35,7 @@ The system uses a hierarchical multi-agent architecture built with **LangChain**
 
 ## Dependencies
 
-*   **Metasploit Framework**: Runs as a separate container (`metasploit`) listening on internal port `$\mu$`.
+*   **Metasploit Framework**: Runs as a separate container (`metasploit`) listening on internal port $\mu$.
 *   **Python 3.11**: Runtime environment.
 *   **LangChain**: Framework for building the agent logic.
 

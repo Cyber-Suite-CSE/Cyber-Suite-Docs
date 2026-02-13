@@ -12,7 +12,7 @@ The **Web Domain Scanner** is a high-performance, distributed system for compreh
 
 The system utilizes a microservices architecture with a message queue for asynchronous processing:
 
-*   **API Service (FastAPI)**: The entry point for submitting jobs and retrieving results. Listens on internal port `$\beta$`.
+*   **API Service (FastAPI)**: The entry point for submitting jobs and retrieving results. Listens on internal port $\beta$.
 *   **Redis**: Acts as the message broker and job queue manager.
 *   **Workers**: Specialized Python processes that consume tasks from Redis:
     *   **Domain Enumeration Worker**: Uses tools and APIs to find subdomains of a target.
@@ -77,8 +77,8 @@ sequenceDiagram
 
 **Environment Variables:**
 *   `REDIS_HOST`: Hostname of the Redis server (Default: `redis`).
-*   `REDIS_PORT`: Redis port (Default: `$\rho$`).
-*   `API_PORT`: API service port (Default: `$\beta$`).
+*   `REDIS_PORT`: Redis port (Default: $\rho$).
+*   `API_PORT`: API service port (Default: $\beta$).
 
 ## Usage
 
