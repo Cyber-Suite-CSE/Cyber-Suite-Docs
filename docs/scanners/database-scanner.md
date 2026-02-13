@@ -23,7 +23,7 @@ The **Database Security Scanner** is a specialized tool for auditing the securit
 
 ## Architecture
 
-The scanner operates as a standalone microservice exposing an API on port **8002**.
+The scanner operates as a standalone microservice exposing an API on internal port **$\gamma$**.
 
 *   **REST API**: Used to initiate scans and retrieve static configuration data.
 *   **WebSockets**: Used to push live updates during long-running scans (e.g., password auditing).
@@ -31,7 +31,7 @@ The scanner operates as a standalone microservice exposing an API on port **8002
 ## Configuration
 
 **Environment Variables:**
-*   `PORT`: Service listening port (Default: 8002).
+*   `PORT`: Service listening port (Default: $\gamma$).
 *   `CREDENTIALS_JSON_PATH`: Path to the dictionary file used for password auditing.
 *   `ENGINES_JSON_PATH`: Configuration file defining supported database engines and their specific checks.
 

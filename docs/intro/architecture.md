@@ -21,16 +21,16 @@ graph TD
     subgraph "Backend Services"
         APIGateway -->|Proxies Requests| WR[Web Routing Layer]
         
-        WR -->|/api/gateway/web-scanner/*| WebScanner[Web Domain Scanner<br/>FastAPI :8001]
-        WR -->|/api/gateway/database-scanner/*| DBScanner[Database Security Scanner<br/>FastAPI :8002]
-        WR -->|/api/gateway/misconfig-checker/*| Misconfig[Misconfig Checker<br/>Python/LangChain :8003]
-        WR -->|/api/gateway/api-tester/*| APITester[API Tester<br/>FastAPI :8004]
-        WR -->|/api/gateway/code-scanner/*| CodeScanner[Code Scanner AI<br/>Node.js :8005]
+        WR -->|/api/gateway/web-scanner/*| WebScanner[Web Domain Scanner<br/>FastAPI :$\beta$]
+        WR -->|/api/gateway/database-scanner/*| DBScanner[Database Security Scanner<br/>FastAPI :$\gamma$]
+        WR -->|/api/gateway/misconfig-checker/*| Misconfig[Misconfig Checker<br/>Python/LangChain :$\delta$]
+        WR -->|/api/gateway/api-tester/*| APITester[API Tester<br/>FastAPI :$\epsilon$]
+        WR -->|/api/gateway/code-scanner/*| CodeScanner[Code Scanner AI<br/>Node.js :$\zeta$]
     end
     
     subgraph "Infrastructure & Databases"
         WebScanner --> Redis[Redis Message Broker]
-        Misconfig --> Metasploit[Metasploit Framework<br/>:55553]
+        Misconfig --> Metasploit[Metasploit Framework<br/>:$\mu$]
     end
     
     subgraph "Web Scanner Workers"
@@ -57,7 +57,7 @@ The following sequence diagram illustrates the exact flow of a request from the 
 sequenceDiagram
     participant User as Browser / User
     participant Nginx as Nginx Proxy
-    participant Gateway as API Gateway (:3000)
+    participant Gateway as API Gateway (:$\alpha$)
     participant Auth as Auth Middleware
     participant Router as Proxy Router
     participant Service as Backend Service (e.g., Web Scanner)
@@ -84,7 +84,7 @@ sequenceDiagram
         
         Note right of Router: Dynamic Routing Logic
         Router->>Router: Extract Service: "web-scanner"
-        Router->>Router: Lookup Target: "http://web-scanner-api:8001"
+        Router->>Router: Lookup Target: "http://web-scanner-api:$\beta$"
         Router->>Router: Rewrite Path: "/jobs/123"
         
         Router->>Service: GET /jobs/123
@@ -98,15 +98,15 @@ sequenceDiagram
 
 | Service | Container Name | Internal Port | Description |
 | :--- | :--- | :--- | :--- |
-| **Dashboard** | `cyber-suite-dashboard` | 3000 | Frontend UI (Next.js) and BFF (Backend for Frontend). |
-| **API Gateway** | `cyber-suite-api-gateway` | 3000 | Central authentication and routing hub. |
-| **Web Domain Scanner** | `web-domain-scanner-api` | 8001 | Distributed scanning system for web assets. |
-| **DB Scanner** | `db-security-scanner` | 8002 | Scans databases (Postgres, MySQL) for misconfigurations. |
-| **Misconfig Checker** | `deployment-misconfig-checker` | 8003 | AI-driven agent (Nikto, Nmap, WPScan, MSF) for vulnerability detection. |
-| **API Tester** | `api-tester` | 8004 | Tool for defining and running API security tests. |
-| **Code Scanner AI** | `code-scanner-ai` | 8005 | AI-powered static application security testing (SAST). |
-| **Metasploit** | `metasploit` | 55553 | RPC service for exploitation tasks used by Misconfig Checker. |
-| **Redis** | `web-scanner-redis` | 6379 | Message broker for the Web Domain Scanner's async workers. |
+| **Dashboard** | `cyber-suite-dashboard` | $\alpha$ | Frontend UI (Next.js) and BFF (Backend for Frontend). |
+| **API Gateway** | `cyber-suite-api-gateway` | $\alpha$ | Central authentication and routing hub. |
+| **Web Domain Scanner** | `web-domain-scanner-api` | $\beta$ | Distributed scanning system for web assets. |
+| **DB Scanner** | `db-security-scanner` | $\gamma$ | Scans databases (Postgres, MySQL) for misconfigurations. |
+| **Misconfig Checker** | `deployment-misconfig-checker` | $\delta$ | AI-driven agent (Nikto, Nmap, WPScan, MSF) for vulnerability detection. |
+| **API Tester** | `api-tester` | $\epsilon$ | Tool for defining and running API security tests. |
+| **Code Scanner AI** | `code-scanner-ai` | $\zeta$ | AI-powered static application security testing (SAST). |
+| **Metasploit** | `metasploit` | $\mu$ | RPC service for exploitation tasks used by Misconfig Checker. |
+| **Redis** | `web-scanner-redis` | $\rho$ | Message broker for the Web Domain Scanner's async workers. |
 
 ## Network Topology
 

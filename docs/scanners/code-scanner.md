@@ -98,7 +98,7 @@ sequenceDiagram
 
 ## Deployment
 
-The service is deployed as a Docker container listening on port `8005`.
+The service is deployed as a Docker container listening on internal port `$\zeta$`.
 
 **Environment Variables:**
 *   `default_model`: The AI model to use (e.g., `gpt-4.1-nano`).

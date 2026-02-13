@@ -31,11 +31,11 @@ The system uses a hierarchical multi-agent architecture built with **LangChain**
 **Environment Variables:**
 *   `GOOGLE_API_KEY`: API key for the Gemini LLM.
 *   `MSF_PASSWORD`: Password for authenticating with the Metasploit RPC service.
-*   `PORT`: Service listening port (Default: 8003).
+*   `PORT`: Service listening port (Default: $\delta$).
 
 ## Dependencies
 
-*   **Metasploit Framework**: Runs as a separate container (`metasploit`) listening on port `55553`.
+*   **Metasploit Framework**: Runs as a separate container (`metasploit`) listening on internal port `$\mu$`.
 *   **Python 3.11**: Runtime environment.
 *   **LangChain**: Framework for building the agent logic.
 

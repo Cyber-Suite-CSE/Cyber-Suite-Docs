@@ -12,7 +12,7 @@ The **Cyber Suite API Gateway** is a critical infrastructure component that mana
 
 ```mermaid
 graph LR
-    Client[Dashboard / Client] -->|HTTP/WS request| Gateway[API Gateway :3000]
+    Client[Dashboard / Client] -->|HTTP/WS request| Gateway[API Gateway :$\alpha$]
     Gateway -->|Auth Check| Auth[JWT Validator]
     
     Auth -->|Valid| Router[Request Router]
@@ -61,13 +61,13 @@ The gateway is configured via environment variables:
 
 | Variable | Description | Default |
 | :--- | :--- | :--- |
-| `PORT` | Server listening port | `3000` |
+| `PORT` | Server listening port | `$\alpha$` |
 | `JWT_SECRET` | Secret key for signing/verifying JWTs | (Required) |
-| `API_TESTER_URL` | Internal URL for API Tester | `http://api-tester:8004` |
-| `WEB_SCANNER_URL` | Internal URL for Web Scanner | `http://web-scanner-api:8001` |
-| `DATABASE_SCANNER_URL` | Internal URL for DB Scanner | `http://db-scanner:8002` |
-| `MISCONFIG_CHECKER_URL` | Internal URL for Misconfig Checker | `http://misconfig-checker:8003` |
-| `CODE_SCANNER_URL` | Internal URL for Code Scanner | `http://code-scanner-ai:8005` |
+| `API_TESTER_URL` | Internal URL for API Tester | `http://api-tester:$\epsilon$` |
+| `WEB_SCANNER_URL` | Internal URL for Web Scanner | `http://web-scanner-api:$\beta$` |
+| `DATABASE_SCANNER_URL` | Internal URL for DB Scanner | `http://db-scanner:$\gamma$` |
+| `MISCONFIG_CHECKER_URL` | Internal URL for Misconfig Checker | `http://misconfig-checker:$\delta$` |
+| `CODE_SCANNER_URL` | Internal URL for Code Scanner | `http://code-scanner-ai:$\zeta$` |
 
 ## Usage
 

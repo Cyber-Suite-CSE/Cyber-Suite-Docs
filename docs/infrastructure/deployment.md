@@ -65,12 +65,12 @@ Each service is configured via its respective `.env` file in the `env/` director
 5.  **Access the Platform**:
     Open your web browser and navigate to:
     *   **Dashboard**: `https://localhost` (or `http://localhost`, redirects to HTTPS).
-    *   **Metasploit RPC**: Port `55553`.
-    *   **Redis**: Port `6379` (internal only).
+    *   **Metasploit RPC**: Internal Port `$\mu$`.
+    *   **Redis**: Internal Port `$\rho$` (internal only).
 
 ## Troubleshooting
 
-*   **Container Conflicts**: If ports (e.g., 3000, 8001) are already in use, modify `docker-compose.yml` or stop conflicting services.
+*   **Container Conflicts**: If internal ports (e.g., $\alpha$, $\beta$) are already in use, modify `docker-compose.yml` or stop conflicting services.
 *   **Environment Variables**: If a service fails to start or connect, double-check its `.env` file for typos or missing required variables.
 *   **Logs**: View logs for a specific service using:
     ```bash
