@@ -17,7 +17,8 @@ The system utilizes a microservices architecture with a message queue for asynch
 *   **Workers**: Specialized Python processes that consume tasks from Redis:
     *   **Domain Enumeration Worker**: Uses tools and APIs to find subdomains of a target.
     *   **Service Discovery Worker**: Scans identified hosts for open ports and services.
-    *   **Web Analysis Worker**: Crawls web pages to analyze headers, technologies, and potential vulnerabilities.
+    *   **Web Analysis Worker**: Fetches and analyzes web content using lightweight HTTP clients (Requests/BeautifulSoup) for speed and efficiency.
+    *   **Browserless Architecture**: Making requests to the target website using the browserless API.
   
 ## Deep Dive: Asynchronous Architecture
 
@@ -69,8 +70,9 @@ sequenceDiagram
 ## Features
 
 *   **Scalability**: The worker-based design allows for horizontal scaling to handle large-scale scans.
-*   **Asynchronous Processing**: Scans connect be triggered and run in the background without blocking the UI.
+*   **Asynchronous Processing**: Scans can be triggered and run in the background without blocking the UI.
 *   **Comprehensive Recon**: Covers the full spectrum from DNS enumeration to content analysis.
+*   **Lightweight**: Optimized for rapid deployment with minimal resource footprint.
 *   **Data Persistence**: Results are stored and can be retrieved via the API.
 
 ## Configuration

@@ -11,15 +11,17 @@ The **Database Security Scanner** is a specialized tool for auditing the securit
 ## Capabilities
 
 *   **Configuration Auditing**: Checks database settings (logging, connection limits, version, encryption) against industry best practices.
-*   **Password Strength Testing**: Identifies weak, default, or easily guessable passwords for database users.
+*   **Password Strength Testing**: Identifies weak, default, or easily guessable passwords using dictionary and regex-based checks.
 *   **Vulnerability Detection**: Checks for known vulnerabilities associated with the specific database version.
 *   **Real-time Reporting**: Streams scan progress and results via WebSockets.
+*   **Lightweight & Fast**: Optimized architecture removing heavy NLP/AI dependencies
 
 ## Technology Stack
 
-*   **Core**: Python (FastAPI)
+*   **Core**: Python (FastAPI) - Running on Alpine Linux
 *   **Server**: Uvicorn
 *   **Communication**: REST API (Control) & WebSockets (Data Streaming)
+*   **Dependencies**: SQLAlchemy, AsyncPG, Paramiko (for SSH)
 
 ## Architecture
 
