@@ -10,7 +10,8 @@ type Contributor = {
 };
 
 const CONTRIBUTORS: Contributor[] = [
-    { login: 'sunimalr', name: 'Sunimal Rathnayake', role: 'Product Owner', isProductOwner: true },
+    { login: 'sunimalr', name: 'Dr. Sunimal Rathnayake', role: 'Product Owner', isProductOwner: true },
+    { login: 'chandag', name :'Prof. Chandana Gamage', role: 'Product Owner', isProductOwner: true},
     { login: 'ashanuk', name: 'Anuradha Shanuka', role: 'Contributor' },
     { login: 'code-scanner-bot', name: 'Code Scanner Bot', role: 'Contributor' },
     { login: 'DaminduDeSilva', name: 'Damindu De Silva', role: 'Contributor' },
