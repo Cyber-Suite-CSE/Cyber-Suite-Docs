@@ -17,6 +17,4 @@ FROM nginx:alpine
 # Copy the build output to Nginx's html directory
 COPY --from=builder /app/build /usr/share/nginx/html/docs
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD nginx -g 'daemon off;'
