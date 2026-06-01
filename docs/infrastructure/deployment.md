@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The **Deployment Repository** (`Deployment-Repo`) acts as the central orchestration hub for the Cyber Suite CSE platform. It uses **Kubernetes with Kustomize overlays** to manage environment-specific configurations for development and production deployments.
+The **Deployment Repository** (`Deployment-Repo`) acts as the central orchestration hub for the Project Vigilion by CSE - Cyber at UoM platform. It uses **Kubernetes with Kustomize overlays** to manage environment-specific configurations for development and production deployments.
 
 ## Prerequisites
 

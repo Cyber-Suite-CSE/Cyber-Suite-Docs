@@ -8,7 +8,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 const config: Config = {
-  title: 'Cyber Suite Docs',
+  title: 'Vigilion Docs',
   tagline: 'Advanced Cybersecurity Auditing & Monitoring Platform',
   favicon: 'img/favicon.ico',
 
@@ -63,7 +63,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Cyber Suite Docs',
+      title: 'Vigilion Docs',
       items: [
         {
           type: 'docSidebar',
@@ -104,7 +104,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Cyber Suite CSE. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Project Vigilion by CSE - Cyber at UoM. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

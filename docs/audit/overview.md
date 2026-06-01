@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The Cyber Suite CSE platform is designed to facilitate comprehensive security auditing and compliance monitoring. This section details the methodologies, standards, and tools used to ensure system integrity and data security.
+The Project Vigilion by CSE - Cyber at UoM platform is designed to facilitate comprehensive security auditing and compliance monitoring. This section details the methodologies, standards, and tools used to ensure system integrity and data security.
 
 ## Audit Scopes
 

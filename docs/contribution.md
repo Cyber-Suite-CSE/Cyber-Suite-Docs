@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Contribution Guidelines
 
-Thank you for your interest in contributing to **Cyber Suite CSE**! We welcome contributions from the community to help improve the platform.
+Thank you for your interest in contributing to **Project Vigilion by CSE - Cyber at UoM**! We welcome contributions from the community to help improve the platform.
 
 ## Getting Started
 

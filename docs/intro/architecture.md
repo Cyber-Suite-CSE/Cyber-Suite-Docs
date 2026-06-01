@@ -6,14 +6,14 @@ sidebar_position: 2
 
 ## Overview
 
-The **Cyber Suite CSE** platform is a comprehensive cybersecurity auditing and monitoring system composed of multiple specialized microservices. The architecture follows a microservices pattern, orchestrated via Docker Compose, with a central Dashboard and API Gateway for unified access and control.
+The **Project Vigilion by CSE - Cyber at UoM** platform is a comprehensive cybersecurity auditing and monitoring system composed of multiple specialized microservices. The architecture follows a microservices pattern, orchestrated via Docker Compose, with a central Dashboard and API Gateway for unified access and control.
 
 ## High-Level Architecture
 
 ```mermaid
 graph TD
     User[User / Browser] -->|HTTPS 443| Nginx[Nginx Reverse Proxy]
-    Nginx -->|/| Dashboard[Cyber Suite Dashboard<br/>Next.js]
+    Nginx -->|/| Dashboard[Vigilion Dashboard<br/>Next.js]
     Nginx -->|/api/| APIGateway[API Gateway<br/>Node.js/Express]
     
     Dashboard -->|Internal API Calls| APIGateway
@@ -43,8 +43,8 @@ graph TD
 ## Service Communication Flow
 
 1.  **Ingress**: All external traffic enters through the **Nginx** reverse proxy on ports 80 (redirects to 443) and 443 (SSL).
-2.  **Frontend Serving**: Nginx routes standard web requests (`/`, `/_next`) to the **Cyber Suite Dashboard** container.
-3.  **API Routing**: Requests destined for backend services (`/api/...`) are routed to the **Cyber Suite API Gateway**.
+2.  **Frontend Serving**: Nginx routes standard web requests (`/`, `/_next`) to the **Vigilion Dashboard** container.
+3.  **API Routing**: Requests destined for backend services (`/api/...`) are routed to the **Vigilion API Gateway**.
 4.  **Service Orchestration**: The API Gateway validates authentication tokens (JWT) and routes the request to the appropriate internal microservice (e.g., `web-domain-scanner-api`, `db-security-scanner`).
 5.  **Inter-Service Communication**: Services communicate over a dedicated Docker bridge network (`cyber-net`).
 

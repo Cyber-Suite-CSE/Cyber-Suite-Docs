@@ -2,11 +2,11 @@
 sidebar_position: 1
 ---
 
-# Cyber Suite Dashboard
+# Vigilion Dashboard
 
 ## Overview
 
-The **Cyber Suite Dashboard** is the primary user interface and control plane for the entire platform. Built with **Next.js 15 (App Router)** and **TypeScript**, it provides a modern, responsive, and intuitive experience for security analysts and administrators.
+The **Vigilion Dashboard** is the primary user interface and control plane for the entire platform. Built with **Next.js 15 (App Router)** and **TypeScript**, it provides a modern, responsive, and intuitive experience for security analysts and administrators.
 
 ## Features
 

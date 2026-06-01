@@ -1,6 +1,6 @@
-# Cyber Suite CSE - Documentation
+# Project Vigilion by CSE - Cyber at UoM - Documentation
 
-Official documentation for the **Cyber Suite CSE** platform - a comprehensive cybersecurity auditing and monitoring system built with modern microservices architecture.
+Official documentation for the **Project Vigilion by CSE - Cyber at UoM** platform - a comprehensive cybersecurity auditing and monitoring system built with modern microservices architecture.
 
 ## 🌐 Live Documentation
 
@@ -8,7 +8,7 @@ Visit the live documentation site: [Coming Soon]
 
 ## 📚 Overview
 
-This repository contains the complete technical documentation for the Cyber Suite CSE platform, built with [Docusaurus](https://docusaurus.io/). The documentation covers:
+This repository contains the complete technical documentation for the Project Vigilion by CSE - Cyber at UoM platform, built with [Docusaurus](https://docusaurus.io/). The documentation covers:
 
 - **Platform Architecture** - System design, service communication, and infrastructure
 - **Core Services** - Dashboard, API Gateway, and orchestration

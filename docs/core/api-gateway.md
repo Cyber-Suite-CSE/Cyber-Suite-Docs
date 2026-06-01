@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-The **Cyber Suite API Gateway** is a critical infrastructure component that manages all incoming API traffic to the platform's backend services. Built with **Node.js**, **Express**, and **http-proxy-middleware**, it provides a unified entry point, centralized authentication, and dynamic routing capabilities.
+The **Vigilion API Gateway** is a critical infrastructure component that manages all incoming API traffic to the platform's backend services. Built with **Node.js**, **Express**, and **http-proxy-middleware**, it provides a unified entry point, centralized authentication, and dynamic routing capabilities.
 
 ## Architecture
 
