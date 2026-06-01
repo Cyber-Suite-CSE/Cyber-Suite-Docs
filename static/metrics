@@ -1,0 +1,3 @@
+# HELP docs_info Documentation site information
+# TYPE docs_info gauge
+docs_info{version="1.0.0"} 1
