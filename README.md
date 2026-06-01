@@ -138,3 +138,16 @@ Port: $\alpha$ (alpha = 3000)
 - [Code-Scanner-AI](https://github.com/Cyber-Suite-CSE/Code-Scanner-AI) - AI code analysis
 - [Deployment-Misconfig-Checker](https://github.com/Cyber-Suite-CSE/Deployment-Misconfig-Checker) - Infrastructure scanner
 - [API-Tester](https://github.com/Cyber-Suite-CSE/API-Tester) - API security testing
+
+## Monitoring & CI/CD
+
+### Prometheus Monitoring
+This service exposes a native, lightweight `/metrics` endpoint returning Prometheus-formatted telemetry (such as uptime, memory, and CPU usage).
+- **Metrics Endpoint:** `/docs/metrics.txt`
+- **Scraping Config:** Configured with annotations `prometheus.io/scrape: "true"` in the deployment manifest.
+
+### CI/CD Pipeline
+GitHub Actions workflow is located at `.github/workflows/deploy.yml` which triggers on push to `main` branch:
+- **Build Optimization:** Uses `docker/setup-buildx-action@v3` with layer caching enabled (`cache-from: type=gha`, `cache-to: type=gha,mode=max`).
+- **Target Registry:** `csecyber/cyber-suite-docs`
+- **Tags Generated:** Dual tags for `:latest` and the unique commit hash `:${ github.sha }`.

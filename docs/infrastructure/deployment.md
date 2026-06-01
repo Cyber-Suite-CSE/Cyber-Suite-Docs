@@ -287,10 +287,46 @@ kubectl get events -n cyber-suite | grep Failed
 
 | Feature | Development | Production |
 |---------|-------------|------------|
-| Monitoring | ✅ Metrics Server + Dashboard | ❌ Excluded |
+| Monitoring | ✅ Metrics Server + Dashboard (v1.24+ Auth)<br/>✅ Prometheus + Grafana (Namespace: `default`) | ❌ Excluded |
 | Resource Limits | Relaxed | Strict |
 | Log Level | DEBUG | INFO/WARN |
 | Replicas | 1 per service | Configurable (HA) |
+
+## Observability & Monitoring Details
+
+### Prometheus & Grafana Namespace Alignment
+- **Namespace:** Deployed under the `default` namespace (controlled via `k8s/monitoring/kustomization.yaml` settings).
+- **Service Discovery & Scrapes:** ServiceAccount scrape credentials and cluster RBAC rules are bound to the `default` namespace. All 8 microservices expose native `/metrics` endpoints scraped automatically.
+- **Docusaurus Docs Metrics:** The documentation site serves metrics from Nginx on the `/docs/metrics.txt` path (configured via `prometheus.io/path` annotations).
+
+### Kubernetes Dashboard Authentication (K8s 1.24+)
+- An explicit Kubernetes Secret resource of type `kubernetes.io/service-account-token` is bound to the `admin-user` ServiceAccount within `k8s/overlays/dev/dashboard-admin.yaml`.
+- This ensures token authentication token is persistent and remains valid for logins under Kubernetes v1.24+.
+
+## CI/CD Automation Workflows
+
+We use a dual-tier GitHub Actions integration model to build and roll out updates:
+
+### 1. Standardized Microservice CI/CD Pipelines
+Every microservice repository has `.github/workflows/deploy.yml` which triggers on a push to `main` branch:
+- **Registry & Image Targets:** Pushes to the `csecyber` Docker Hub namespace (e.g. `csecyber/api-tester`, `csecyber/cyber-suite-dashboard`, etc.).
+- **Dockerfile Paths:** Custom paths are automatically handled (such as `./Dockerfile.offline` for `Cyber-Suite-Docs`).
+- **Tagging Strategy:** Standardized to produce two tags for every build: `:latest` and the commit hash `:${{ github.sha }}`.
+- **Cache Optimization:** Utilizes `docker/setup-buildx-action@v3` and GitHub Actions native layer caching (`cache-from: type=gha`, `cache-to: type=gha,mode=max`) to speed up subsequent image builds.
+- **Ignore Rules:** All repositories use optimized `.dockerignore` files ignoring `.github/`, `.git/`, and local files to ensure changes to workflow scripts do not trigger Docker context invalidation.
+
+### 2. Manual Server Deployment Workflow
+The `Deployment-Repo` contains a central manual deployment pipeline inside `.github/workflows/deploy-server.yml`:
+- **Trigger:** Configured with `workflow_dispatch` (triggered manually from the GitHub UI).
+- **Inputs:** A choice input named `overlay` allowing selection between `dev` and `prod`.
+- **Target VM SSH Connection:** Utilizes `appleboy/ssh-action@v1.0.3` using credentials `SERVER_HOST`, `SERVER_USER`, and `SERVER_SSH_KEY`.
+- **Deployment Script Commands:**
+  ```bash
+  cd ~/Deployment-Repo
+  git pull origin main
+  kubectl apply -k k8s/overlays/${{ github.event.inputs.overlay }}
+  kubectl rollout restart deployment -n cyber-suite
+  ```
 
 ## Scaling
 
