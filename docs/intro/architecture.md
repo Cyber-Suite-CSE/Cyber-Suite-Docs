@@ -12,9 +12,9 @@ The **Project Vigilion by CSE - Cyber at UoM** platform is a comprehensive cyber
 
 ```mermaid
 graph TD
-    User[User / Browser] -->|HTTPS 443| Nginx[Nginx Reverse Proxy]
-    Nginx -->|/| Dashboard[Vigilion Dashboard<br/>Next.js]
-    Nginx -->|/api/| APIGateway[API Gateway<br/>Node.js/Express]
+    User[User / Browser] -->|HTTPS 443| Traefik[Traefik Ingress / Reverse Proxy]
+    Traefik -->|/| Dashboard[Vigilion Dashboard<br/>Next.js]
+    Traefik -->|/api/| APIGateway[API Gateway<br/>Node.js/Express]
     
     Dashboard -->|Internal API Calls| APIGateway
     
@@ -42,8 +42,8 @@ graph TD
 
 ## Service Communication Flow
 
-1.  **Ingress**: All external traffic enters through the **Nginx** reverse proxy on ports 80 (redirects to 443) and 443 (SSL).
-2.  **Frontend Serving**: Nginx routes standard web requests (`/`, `/_next`) to the **Vigilion Dashboard** container.
+1.  **Ingress**: All external traffic enters through the **Traefik** ingress / reverse proxy on ports 80 (redirects to 443) and 443 (SSL).
+2.  **Frontend Serving**: Traefik routes standard web requests (`/`, `/_next`) to the **Vigilion Dashboard** container.
 3.  **API Routing**: Requests destined for backend services (`/api/...`) are routed to the **Vigilion API Gateway**.
 4.  **Service Orchestration**: The API Gateway validates authentication tokens (JWT) and routes the request to the appropriate internal microservice (e.g., `web-domain-scanner-api`, `db-security-scanner`).
 5.  **Inter-Service Communication**: Services communicate over a dedicated Docker bridge network (`cyber-net`).
@@ -56,7 +56,7 @@ The following sequence diagram illustrates the exact flow of a request from the 
 ```mermaid
 sequenceDiagram
     participant User as Browser / User
-    participant Nginx as Nginx Proxy
+    participant Traefik as Traefik Ingress / Proxy
     participant Gateway as API Gateway (:$\alpha$)
     participant Auth as Auth Middleware
     participant Router as Proxy Router
@@ -64,15 +64,15 @@ sequenceDiagram
 
     %% Authentication Phase
     Note over User, Gateway: 1. Authentication
-    User->>Nginx: POST /api/auth/login (Creds)
-    Nginx->>Gateway: Forward Request
+    User->>Traefik: POST /api/auth/login (Creds)
+    Traefik->>Gateway: Forward Request
     Gateway->>Gateway: Validate Admin Credentials
     Gateway-->>User: Set-Cookie: auth_token=JWT (HttpOnly)
 
     %% Service Request Phase
     Note over User, Service: 2. Protected Service Access
-    User->>Nginx: GET /api/gateway/web-scanner/jobs/123
-    Nginx->>Gateway: Forward Request (with Cookie)
+    User->>Traefik: GET /api/gateway/web-scanner/jobs/123
+    Traefik->>Gateway: Forward Request (with Cookie)
     
     Gateway->>Auth: authMiddleware()
     Auth->>Auth: Verify JWT in Cookie

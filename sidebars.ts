@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
@@ -34,7 +34,11 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Infrastructure',
-      items: ['infrastructure/deployment'],
+      items: [
+        'infrastructure/deployment',
+        'infrastructure/cluster-setup',
+        'infrastructure/CI-CD',
+      ],
       collapsed: false,
     },
     {
