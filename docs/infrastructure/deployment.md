@@ -17,33 +17,12 @@ For installation details of the Kubernetes cluster, ingress configuration, or CI
 
 ---
 
-## 1. Repository Structure
+## 1. Deployment Architecture
 
-The `Deployment-Repo` acts as the central orchestration hub for all microservices. It is structured into a base folder and overlays:
-
-```
-Deployment-Repo/
-├── k8s/
-│   ├── base/                    # Core microservice manifests
-│   │   ├── kustomization.yaml   # Declares base resources
-│   │   ├── 00-namespace.yaml    # Creates namespace 'cyber-suite'
-│   │   ├── 02-configmaps.yaml   # ConfigMap placeholder
-│   │   ├── 03-pvc.yaml          # Persisted Volume Claim (for DB/scans)
-│   │   ├── *.yaml               # Individual microservice deployments & services
-│   │   └── ingress.yaml         # Ingress routing rules
-│   └── overlays/
-│       ├── dev/                 # Staging & Development Overlay
-│       │   ├── kustomization.yaml
-│       │   ├── replacements.yaml# Binds CM variables to deployment templates
-│       │   ├── .config.env      # Non-sensitive dev variables
-│       │   ├── .secrets.env     # Dev secrets (JWT, API keys)
-│       │   └── dashboard-admin.yaml # Admin account for K8s Dashboard
-│       └── prod/                # Production Overlay
-│           ├── kustomization.yaml
-│           ├── replacements.yaml
-│           ├── .config.env      # Non-sensitive prod variables
-│           └── .secrets.env     # Prod secrets
-```
+The deployment configurations are organized using a standard base-and-overlay architecture:
+*   **Base manifests** define the default Kubernetes configurations, network namespaces, persistent volume claims, routing rules, and deployments for all microservices.
+*   **Staging/Development Overlay** configures variables for dynamic testing, debugging options, and administrative utilities.
+*   **Production Overlay** configures optimized, secure settings tailored for stability and secure access limits.
 
 ---
 
@@ -75,81 +54,16 @@ Key variables:
 
 ## 3. Deploying the Platform
 
-### Step 1: Upload the Manifests to the Server
-Choose one of the following methods to place the `Deployment-Repo` folder on your target VM server:
-
-*   **Option A: Git Clone directly on the VM (Recommended)**
-    ```bash
-    git clone https://github.com/Cyber-Suite-CSE/Deployment-Repo.git ~/Deployment-Repo
-    cd ~/Deployment-Repo
-    ```
-*   **Option B: Upload via SCP from your Windows machine**
-    Run this from your **local machine terminal** (Command Prompt/PowerShell):
-    ```powershell
-    scp -r "e:\Libraries\Documents\Github\Deployment-Repo" <SERVER_USER>@<SERVER_IP>:~/
-    ```
-*   **Option C: Upload a ZIP archive and extract it on the server**
-    1. Upload the zip archive from your **local machine**:
-       ```powershell
-       scp "e:\Libraries\Documents\Github\Deployment-Repo.zip" <SERVER_USER>@<SERVER_IP>:~/
-       ```
-    2. Extract it inside your **VM SSH session**:
-       ```bash
-       sudo apt-get update && sudo apt-get install unzip -y
-       unzip ~/Deployment-Repo.zip -d ~/
-       cd ~/Deployment-Repo
-       ```
-
----
-
-### Step 2: Create local Environment Files
-Navigate to your overlay folder (e.g. `k8s/overlays/dev`) and create the configuration files using the examples:
-```bash
-# 1. Copy config templates
-cp k8s/overlays/dev/.config.env.example k8s/overlays/dev/.config.env
-cp k8s/overlays/dev/.secrets.env.example k8s/overlays/dev/.secrets.env
-
-# 2. Open and fill in the values
-nano k8s/overlays/dev/.config.env
-nano k8s/overlays/dev/.secrets.env
-```
-
----
-
-### Step 3: Apply Deployment Overlay
-Deploy the resources using Kustomize:
-```bash
-# Apply development overlay (includes monitoring dashboards)
-kubectl apply -k k8s/overlays/dev
-
-# Apply production overlay (bare microservices, no dashboard)
-kubectl apply -k k8s/overlays/prod
-```
-
----
-
-### Step 4: Verify Running Workloads
-Verify that the services boot up and enter the `Running` status:
-```bash
-kubectl get pods -n cyber-suite -w
-```
+Deploying the Vigilion platform involves the following key steps:
+1.  **Transfer Manifests**: The orchestrator configuration folder (`Deployment-Repo`) is uploaded or cloned to the target VM server environment.
+2.  **Initialize Environments**: Dynamic and sensitive configurations are prepared in the target environment by duplicating the `.env.example` templates and inserting relevant keys, CORS configuration, and security parameters.
+3.  **Execute Overlay Deployment**: Kustomize overlays (e.g., `dev` or `prod`) are applied to the Kubernetes cluster to start the system and its dependent components.
+4.  **Verify Pods**: The health check interface or command-line logs are reviewed to confirm that all service pods have initialized and transitioned to a healthy runtime status.
 
 ---
 
 ## 4. Scaling & Cleanups
 
-### Scaling Pod Replicas
-To scale individual services horizontally (e.g. if the code scanner is overloaded):
-```bash
-kubectl scale deployment code-scanner-ai --replicas=3 -n cyber-suite
-```
+*   **Scaling Microservices**: Individual services (such as the SAST scanner engine) can be scaled horizontally to support a higher scan throughput.
+*   **Teardown**: Deployed configurations can be removed, stashed, or destroyed to clean up resources and free memory allocation on the server when needed.
 
-### Complete Teardown
-To remove all deployments and free up cluster resources:
-```bash
-# Remove prod overlay
-kubectl delete -k k8s/overlays/prod
-
-# Delete namespace (and all resources within it)
-kubectl delete namespace cyber-suite
-```

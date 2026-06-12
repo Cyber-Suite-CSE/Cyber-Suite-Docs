@@ -101,24 +101,7 @@ sequenceDiagram
     end
 ```
 
-## Docker Deployment
+## Containerization & Development
 
-
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-
-2.  **Start Dev Server**:
-    ```bash
-    npm run dev
-    ```
-    Access at `http://localhost:3000`.
-
-## Docker Deployment
-
-The application is containerized using a multi-stage `Dockerfile.prod` for optimized production builds.
-
-```bash
-docker build -f Dockerfile.prod -t registry/cyber-suite-dashboard .
-```
+*   **Local Setup**: Running the dashboard locally during development requires executing the package manager's installation command to resolve dependencies. You can then trigger the dev script to spin up the local server, exposing the interface on its default local port.
+*   **Production Deployment**: The application is containerized using a multi-stage production Docker configuration (`Dockerfile.prod`). Building the container image compiles and packages the Next.js assets to ensure high performance and an optimized footprint in target environments.

@@ -58,32 +58,10 @@ graph TD
 
 To register and run the self-hosted runner agent persistently as a system daemon on the VM:
 
-1.  **Create and navigate to a runner directory:**
-    ```bash
-    mkdir ~/actions-runner && cd ~/actions-runner
-    ```
-2.  **Download the latest runner package:**
-    ```bash
-    curl -o actions-runner-linux-x64-2.334.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz
-    tar xzf ./actions-runner-linux-x64-2.334.0.tar.gz
-    ```
-3.  **Register the runner with the organization/repository token:**
-    Retrieve the registration token from **GitHub Settings** -> **Actions** -> **Runners** -> **New self-hosted runner**, and execute:
-    ```bash
-    ./config.sh --url https://github.com/Cyber-Suite-CSE --token <ORG_RUNNER_TOKEN> --name "vigilion-server-runner" --labels self-hosted
-    ```
-4.  **Configure as a Persistent systemd Service:**
-    By default, running `./run.sh` will close when your SSH connection ends. Install it as a system daemon:
-    ```bash
-    # Install the systemd service files
-    sudo ./svc.sh install
-
-    # Start the daemon
-    sudo ./svc.sh start
-
-    # Verify status is Active (Running)
-    sudo ./svc.sh status
-    ```
+1.  **Create and Navigate to a Runner Directory**: Create a dedicated workspace directory on the server to house the runner binaries and run context.
+2.  **Download and Extract the Runner Package**: Fetch the target runner agent archive using a download tool (like `curl`) matching your platform architecture, and extract the package files within the runner directory.
+3.  **Register the Runner**: Obtain a unique organization runner token from your GitHub Actions settings page, and invoke the configuration script. This registers the runner under your organization profile (e.g. `Cyber-Suite-CSE`) with identifiers and tags (e.g. `self-hosted`).
+4.  **Configure as a Persistent systemd Service**: Install the runner script as a system service wrapper and start the daemon. This ensures the runner process persists when the active SSH session is closed and starts automatically on system boot. You can check the service status to verify it has entered the active running state.
 
 ---
 
@@ -121,42 +99,24 @@ jobs:
 
 ### Manual Setup Steps for SSH-Action
 
-For `appleboy/ssh-action` to connect to the target shell, you must configure public key authentication:
+For the deployment action to establish a secure shell connection to the loopback target interface, configure public key authentication:
 
-1.  **Generate an SSH Keypair on the server:**
-    If you don't already have a dedicated key pair for GitHub deployments:
-    ```bash
-    ssh-keygen -t rsa -b 4096 -f ~/.ssh/github_deploy_key -N ""
-    ```
-2.  **Authorize the Public Key:**
-    Append the public key to the authorized keys file so the host accepts incoming connections with this key:
-    ```bash
-    cat ~/.ssh/github_deploy_key.pub >> ~/.ssh/authorized_keys
-    chmod 600 ~/.ssh/authorized_keys
-    chmod 700 ~/.ssh
-    ```
-3.  **Configure GitHub Repository Secrets:**
-    Navigate to your GitHub repository settings under **Settings** -> **Secrets and variables** -> **Actions**, and add the following repository secrets:
-    *   `SERVER_HOST`: The IP address or domain of the VM (e.g., `127.0.0.1` or the internal address since the runner is local).
-    *   `SERVER_USER`: The VM system username (e.g. `cseroot`).
-    *   `SERVER_SSH_KEY`: The raw private key content (`cat ~/.ssh/github_deploy_key`).
+1.  **Generate an SSH Keypair on the Server**: Generate a dedicated, passwordless RSA keypair on the VM using key-generation tools.
+2.  **Authorize the Public Key**: Append the newly generated public key signature to the host's `authorized_keys` file, adjusting the file and directory permission levels (`600` for the file, `700` for the directory) to ensure the server authorizes keys correctly.
+3.  **Configure GitHub Repository Secrets**: Navigate to your GitHub repository settings under Actions Secrets, and map the connection fields:
+    *   `SERVER_HOST`: Set the server target IP or loopback address.
+    *   `SERVER_USER`: Enter the deployment username.
+    *   `SERVER_SSH_KEY`: Store the contents of the generated private key.
 
 :::note
-**SECURITY WARNING:** Do not add passphrase-protected SSH keys, as the GitHub Action requires passwordless key entry to run non-interactively. Ensure your private key `SERVER_SSH_KEY` is kept secure and never exposed.
+**SECURITY WARNING:** Ensure the SSH key has no passphrase, otherwise the automated deployment action will fail since it cannot respond to interactive prompts. Keep the private key secure and restrict access to authorized repository administrators.
 :::
 
 ### Manual Steps to Trigger the Deployment
 
-1.  **Ensure Runner is Online:** Check **GitHub Settings** -> **Actions** -> **Runners** to ensure your self-hosted runner shows an `Idle` (Green) status.
-2.  **Run the Workflow:**
-    *   Go to the **Actions** tab in the `Deployment-Repo` repository.
-    *   Select **Deploy to Server** from the sidebar.
-    *   Click **Run workflow**.
-    *   Choose the target overlay branch/overlay (`dev` or `prod`).
-    *   Click the green **Run workflow** button.
-3.  **Monitor Progress:**
-    *   Click on the running job in the actions list to watch logs.
-    *   Alternatively, log into the server and run `kubectl get pods -n cyber-suite -w` to monitor the microservice rollout.
+1.  **Ensure Runner is Online**: Confirm the registered runner's status is idle/online under your organization's Settings tab in GitHub.
+2.  **Run the Workflow**: Locate the target deployment workflow under the repository Actions tab, trigger the manual workflow execution, select the appropriate overlay configuration, and run the job.
+3.  **Monitor Progress**: Monitor the job execution trace on the GitHub console, or retrieve the active pod list within the target namespace to watch the microservices roll out in real-time.
 
 ---
 
@@ -165,33 +125,13 @@ For `appleboy/ssh-action` to connect to the target shell, you must configure pub
 When a new image is pushed to Docker Hub, Kubernetes does not automatically download it unless a pod is restarted (since we use `:latest` tags). Our overlays enforce `imagePullPolicy: Always` on all deployments, meaning Kubernetes will check Docker Hub for the newest image digest whenever a pod restarts.
 
 ### 1. Rolling Restart of the Suite
-To pull the new images and perform a zero-downtime rolling update, execute a rollout restart:
-```bash
-# Restart all microservices in the namespace
-kubectl rollout restart deployment -n cyber-suite
-
-# Restart a specific service (e.g. docs only)
-kubectl rollout restart deployment/docs -n cyber-suite
-```
+To pull the new images and perform a zero-downtime rolling update, trigger a rollout restart on the entire namespace deployment or target specific deployments directly. This forces Kubernetes to retrieve the updated layers.
 
 ### 2. Monitoring the Update Rollout
-Watch the progress of the container replacement:
-```bash
-kubectl rollout status deployment/docs -n cyber-suite
-```
+Monitor the deployment status using standard rollout status commands to ensure the old container instances are cleanly replaced by the new builds.
 
 ### 3. Container Runtime Cache Clearing (Troubleshooting)
-If K3s' containerd runtime serves cached image layers instead of pulling the newly built layers from Docker Hub, run a clean reload sequence:
-
-1.  **Scale the deployments down to 0:**
-    ```bash
-    kubectl scale deployment --all --replicas=0 -n cyber-suite
-    ```
-2.  **Remove cached images from the runtime (crictl):**
-    ```bash
-    sudo k3s crictl rmi docker.io/csecyber/cyber-suite-docs:latest
-    ```
-3.  **Scale the deployments back up to 1:**
-    ```bash
-    kubectl scale deployment --all --replicas=1 -n cyber-suite
-    ```
+If the K3s runtime serves cached layers instead of pulling the fresh build from Docker Hub, perform a clean reload sequence:
+1.  **Scale Down Deployments**: Scale down all active suite deployments to zero replicas to stop the active pods.
+2.  **Remove Cache**: Log into the node and remove the target image explicitly from the container runtime cache using container CLI utilities (such as `crictl`).
+3.  **Scale Up Deployments**: Scale the deployments back up to their original replica counts. This forces the runtime to perform a fresh image pull from the registry.

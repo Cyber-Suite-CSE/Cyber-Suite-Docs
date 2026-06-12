@@ -12,7 +12,7 @@ The **Vigilion API Gateway** is a critical infrastructure component that manages
 
 ```mermaid
 graph LR
-    Client[Dashboard / Client] -->|HTTP/WS request| Gateway[API Gateway :$\alpha$]
+    Client[Dashboard / Client] -->|HTTP/WS request| Gateway[API Gateway :α]
     Gateway -->|Auth Check| Auth[JWT Validator]
     
     Auth -->|Valid| Router[Request Router]
@@ -86,19 +86,7 @@ Clients must include a valid JWT in the `Authorization` header:
 | `/api/gateway/misconfig-checker/` | Deployment Misconfig Checker |
 | `/api/gateway/code-scanner/` | Code Scanner AI |
 
-## Development
+## Development & Execution
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-
-2.  **Run Locally**:
-    ```bash
-    npm run dev
-    ```
-
-3.  **Linting**:
-    ```bash
-    npm run lint
-    ```
+*   **Local Setup**: Running the gateway service locally in development requires installing the package dependencies and starting the local dev script. Doing so executes the compiler daemon and starts the application, displaying the endpoint details in your terminal console.
+*   **Code Quality**: Linter rules are configured to run checks on project styles and check for static analysis syntax issues.

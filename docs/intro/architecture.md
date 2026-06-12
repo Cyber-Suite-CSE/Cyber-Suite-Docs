@@ -21,16 +21,16 @@ graph TD
     subgraph "Backend Services"
         APIGateway -->|Proxies Requests| WR[Web Routing Layer]
         
-        WR -->|/api/gateway/web-scanner/*| WebScanner[Web Domain Scanner<br/>FastAPI :$\beta$]
-        WR -->|/api/gateway/database-scanner/*| DBScanner[Database Security Scanner<br/>FastAPI :$\gamma$]
-        WR -->|/api/gateway/misconfig-checker/*| Misconfig[Misconfig Checker<br/>Python/LangChain :$\delta$]
-        WR -->|/api/gateway/api-tester/*| APITester[API Tester<br/>FastAPI :$\epsilon$]
-        WR -->|/api/gateway/code-scanner/*| CodeScanner[Code Scanner AI<br/>Node.js :$\zeta$]
+        WR -->|/api/gateway/web-scanner/*| WebScanner[Web Domain Scanner<br/>FastAPI :β]
+        WR -->|/api/gateway/database-scanner/*| DBScanner[Database Security Scanner<br/>FastAPI :γ]
+        WR -->|/api/gateway/misconfig-checker/*| Misconfig[Misconfig Checker<br/>Python/LangChain :δ]
+        WR -->|/api/gateway/api-tester/*| APITester[API Tester<br/>FastAPI :ε]
+        WR -->|/api/gateway/code-scanner/*| CodeScanner[Code Scanner AI<br/>Node.js :ζ]
     end
     
     subgraph "Infrastructure & Databases"
         WebScanner --> Redis[Redis Message Broker]
-        Misconfig --> Metasploit[Metasploit Framework<br/>:$\mu$]
+        Misconfig --> Metasploit[Metasploit Framework<br/>:μ]
     end
     
     subgraph "Web Scanner Workers"
@@ -57,7 +57,7 @@ The following sequence diagram illustrates the exact flow of a request from the 
 sequenceDiagram
     participant User as Browser / User
     participant Traefik as Traefik Ingress / Proxy
-    participant Gateway as API Gateway (:$\alpha$)
+    participant Gateway as API Gateway (:α)
     participant Auth as Auth Middleware
     participant Router as Proxy Router
     participant Service as Backend Service (e.g., Web Scanner)
@@ -84,7 +84,7 @@ sequenceDiagram
         
         Note right of Router: Dynamic Routing Logic
         Router->>Router: Extract Service: "web-scanner"
-        Router->>Router: Lookup Target: "http://web-scanner-api:$\beta$"
+        Router->>Router: Lookup Target: "http://web-scanner-api:β"
         Router->>Router: Rewrite Path: "/jobs/123"
         
         Router->>Service: GET /jobs/123

@@ -14,23 +14,14 @@ Thank you for your interest in contributing to **Project Vigilion by CSE - Cyber
 
 ## Development Workflow
 
-1.  **Create a Branch**: Create a new branch for your feature or bugfix.
-    ```bash
-    git checkout -b feature/my-new-feature
-    ```
+1.  **Create a Branch**: Create a new branch locally dedicated to your feature or bugfix (e.g., `feature/my-new-feature`). This keeps your changes isolated from the main branch.
 2.  **Make Changes**: Implement your changes, ensuring you follow the coding standards (see below).
-3.  **Test**: Verified your changes locally.
-    *   For frontend changes: `npm run lint` and verify UI responsiveness.
-    *   For backend services: Run unit tests (e.g., `pytest`, `npm test`) if available.
-4.  **Commit**: Commit your changes with clear, descriptive messages.
-    ```bash
-    git commit -m "feat: Add new scanner module"
-    ```
-5.  **Push**: Push your branch to your fork.
-    ```bash
-    git push origin feature/my-new-feature
-    ```
-6.  **Pull Request**: Open a Pull Request (PR) against the `main` branch of the original repository.
+3.  **Test**: Verify your changes locally. 
+    *   For frontend changes, run the linter script and check visual styling.
+    *   For backend services, invoke local unit testing scripts (such as `pytest` or package test suites) if configured.
+4.  **Commit**: Commit your changes to your local branch using structured, descriptive commit messages (e.g., following Conventional Commits format, like `feat: Add new scanner module`).
+5.  **Push**: Push the local branch containing your commits to your remote GitHub fork.
+6.  **Pull Request**: Navigate to the original repository on GitHub and open a Pull Request (PR) against the target branch (e.g., `main`).
 
 ## Coding Standards
 
